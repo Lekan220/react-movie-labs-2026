@@ -88,7 +88,7 @@ const movies = [sample, sample, sample, sample, sample, sample, sample];
 
 const App = () => {
   return (
-      <homePage movies={movies} />
+      <HomePage movies={movies} />
   );
 };
 
