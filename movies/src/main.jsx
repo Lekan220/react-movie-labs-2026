@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import homePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage";
+
 
 const sample = {
   adult: false,
@@ -30,7 +31,7 @@ const sample = {
       name: "Action",
     },
   ],
-  HomePage:
+  homePage:
     "https://www.starwars.com/films/star-wars-episode-viii-the-last-jedi",
   id: 181808,
   imdb_id: "tt2527336",
