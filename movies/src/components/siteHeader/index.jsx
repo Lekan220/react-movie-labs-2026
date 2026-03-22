@@ -11,10 +11,10 @@ import { useNavigate } from "react-router";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
-
-const SiteHeader = () => {
+const SiteHeader = ({ toggleDarkMode, darkMode }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -49,60 +49,65 @@ const SiteHeader = () => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             All you ever wanted to know about Movies!
           </Typography>
-            {isMobile ? (
-              <>
-                <IconButton
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuOptions.map((opt) => (
-                    <MenuItem
-                      key={opt.label}
-                      onClick={() => handleMenuSelect(opt.path)}
-                    >
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
-            ) : (
-              <>
+
+          {isMobile ? (
+            <>
+              <IconButton
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                keepMounted
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
                 {menuOptions.map((opt) => (
-                  <Button
+                  <MenuItem
                     key={opt.label}
-                    color="inherit"
                     onClick={() => handleMenuSelect(opt.path)}
                   >
                     {opt.label}
-                  </Button>
+                  </MenuItem>
                 ))}
-              </>
-            )}
+              </Menu>
+
+              {/* Dark mode toggle in mobile menu */}
+              <IconButton color="inherit" onClick={toggleDarkMode}>
+                {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </>
+          ) : (
+            <>
+              {menuOptions.map((opt) => (
+                <Button
+                  key={opt.label}
+                  color="inherit"
+                  onClick={() => handleMenuSelect(opt.path)}
+                >
+                  {opt.label}
+                </Button>
+              ))}
+
+              {/* Dark mode toggle for desktop */}
+              <IconButton color="inherit" onClick={toggleDarkMode}>
+                {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <Offset />
     </>
   );
 };
-
+      
 export default SiteHeader;
