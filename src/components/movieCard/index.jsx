@@ -15,39 +15,43 @@ import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router";
 import Avatar from '@mui/material/Avatar';
+import { styled, useTheme } from "@mui/material/styles";
 
+// Hoverable Card using MUI styled
+const HoverCard = styled(Card)(({ theme }) => ({
+  transition: "transform 0.3s, box-shadow 0.3s",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: theme.shadows[6],
+    border: `1px solid ${theme.palette.primary.main}`,
+  },
+  cursor: "pointer",
+  margin: theme.spacing(1),
+}));
 
 export default function MovieCard({ movie, action }) {
+  const { favorites, addToFavorites } = useContext(MoviesContext);
+  const theme = useTheme();
 
-   const { favorites, addToFavorites } = useContext(MoviesContext);
-
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false
-  }
+  // Mark as favorite if in favorites list
+  movie.favorite = favorites.includes(movie.id);
 
   const handleAddToFavorite = (e) => {
     e.preventDefault();
     addToFavorites(movie);
   };
 
-
   return (
-    <Card>
-                 <CardHeader
+    <HoverCard variant="outlined">
+      <CardHeader
         avatar={
           movie.favorite ? (
-            <Avatar sx={{ backgroundColor: 'red' }}>
+            <Avatar sx={{ backgroundColor: "red" }}>
               <FavoriteIcon />
             </Avatar>
           ) : null
         }
-        title={
-          <Typography variant="h5" component="p">
-            {movie.title}{" "}
-          </Typography>
-        }
+        title={<Typography variant="h6">{movie.title}</Typography>}
       />
 
       <CardMedia
@@ -55,39 +59,34 @@ export default function MovieCard({ movie, action }) {
         image={
           movie.poster_path
             ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
+            : "/default-image.png"
         }
+        title={movie.title}
       />
- 
+
       <CardContent>
-        <Grid container>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {movie.release_date}
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant="body2">
+              <CalendarIcon fontSize="small" /> {movie.release_date}
             </Typography>
           </Grid>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
+          <Grid item xs={6}>
+            <Typography variant="body2">
+              <StarRateIcon fontSize="small" /> {movie.vote_average}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
-            <CardActions disableSpacing>
-      
+
+      <CardActions disableSpacing>
         {action(movie)}
-      
         <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
-            More Info ...
+          <Button variant="outlined" size="small" color="primary">
+            More Info
           </Button>
         </Link>
-        
       </CardActions>
-
-    </Card>
+    </HoverCard>
   );
 }
-
