@@ -4,39 +4,57 @@ import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../components/spinner';
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites'
-
+import { useState, useContext } from "react";
+import { MoviesContext } from "../contexts/moviesContext";
+import TextField from "@mui/material/TextField";
 const HomePage = (props) => {
-
-  const { data, error, isPending, isError  } = useQuery({
+  const { data, error, isPending, isError } = useQuery({
     queryKey: ['discover'],
     queryFn: getMovies,
-  })
-  
-  if (isPending) {
-    return <Spinner />
-  }
+  });
 
-  if (isError) {
-    return <h1>{error.message}</h1>
-  }  
-  
-  const movies = data.results;
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Redundant, but necessary to avoid app crashing.
-  const favorites = movies.filter(m => m.favorite)
-  localStorage.setItem('favorites', JSON.stringify(favorites))
-  const addToFavorites = (movieId) => true 
+  if (isPending) return <Spinner />;
+  if (isError) return <h1>{error.message}</h1>;
 
-     return (
-      <PageTemplate
-        title="Discover Movies"
-        movies={movies}
-        action={(movie) => {
-          return <AddToFavoritesIcon movie={movie} />
-        }}
-      />
+  const movies = data.results || [];
+
+  // Filter movies based on search term
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Optional: favorites logic
+  const favorites = filteredMovies.filter((m) => m.favorite);
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+
+  const addToFavorites = (movieId) => true;
+
+  return (
+    <div>
+      {/* Search bar */}
+      <TextField
+        label="Search movies..."
+        variant="outlined"
+        fullWidth
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        sx={{ mb: 3 }}
+      />
+
+      {/* Movie list */}
+      <PageTemplate
+        title="Discover Movies"
+        movies={filteredMovies}
+        action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      />
+
+      {filteredMovies.length === 0 && (
+        <p>No movies found matching your search.</p>
+      )}
+    </div>
+  );
 };
 export default HomePage;
 
