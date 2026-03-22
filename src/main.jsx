@@ -1,4 +1,4 @@
-import AddMovieReviewPage from './pages/addMovieReviewPage'
+import AddMovieReviewPage from './pages/addMovieReviewPage';
 import MovieReviewPage from "./pages/movieReviewPage";
 import React from "react";
 import { createRoot } from "react-dom/client";
