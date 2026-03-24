@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
+import UpcomingMoviesPage from "./pages/UpcomingMoviesPage";
 import SiteHeader from './components/siteHeader';
 import MoviesContextProvider from "./contexts/moviesContext";
 import HomePage from "./pages/HomePage";
@@ -14,6 +14,8 @@ import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import AddMovieReviewPage from './pages/addMovieReviewPage';
 import MovieReviewPage from "./pages/movieReviewPage";
 import TrendingMoviesPage from "./pages/trendingMoviesPage";
+
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +52,7 @@ const App = () => {
           
           <MoviesContextProvider>
             <Routes>
+              <Route path="/upcoming" element={<UpcomingMoviesPage />} />
               <Route path="/trending" element={<TrendingMoviesPage />} />
               <Route path="/reviews/form" element={<AddMovieReviewPage />} />
               <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />

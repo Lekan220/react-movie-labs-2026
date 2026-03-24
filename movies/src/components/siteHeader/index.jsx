@@ -29,6 +29,7 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
     { label: "Option 3", path: "/" },
     { label: "Option 4", path: "/" },
     { label: "Trending", path: "/trending" },
+    { label: "Upcoming", path: "/upcoming" }
   ];
 
   const handleMenuSelect = (pageURL) => {
@@ -75,7 +76,7 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
                   <MenuItem
                     key={opt.label}
                     onClick={() => handleMenuSelect(opt.path)}
-                  >
+                  > 
                     {opt.label}
                   </MenuItem>
                 ))}
@@ -95,6 +96,7 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
                   onClick={() => handleMenuSelect(opt.path)}
                 >
                   {opt.label}
+                  { opt.label === "Trending" && <span style={{ marginLeft: 5, fontSize: '0.75rem', color: 'red' }}>Hot!</span> }
                 </Button>
               ))}
 
