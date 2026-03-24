@@ -19,7 +19,7 @@ import { styled, useTheme } from "@mui/material/styles";
 
 // Hoverable Card using MUI styled
 const HoverCard = styled(Card)(({ theme }) => ({
-  transition: "transform 0.3s, box-shadow 0.3s",
+  transition: "transform 0.5s, box-shadow 0.4s",
   "&:hover": {
     transform: "scale(1.05)",
     boxShadow: theme.shadows[6],

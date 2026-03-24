@@ -8,11 +8,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import SiteHeader from './components/siteHeader';
 import MoviesContextProvider from "./contexts/moviesContext";
-import HomePage from "./pages/homePage";
+import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/movieDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import AddMovieReviewPage from './pages/addMovieReviewPage';
 import MovieReviewPage from "./pages/movieReviewPage";
+import TrendingMoviesPage from "./pages/trendingMoviesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,9 +45,12 @@ const App = () => {
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          
           <SiteHeader toggleDarkMode={() => setDarkMode(!darkMode)} darkMode={darkMode} />
+          
           <MoviesContextProvider>
             <Routes>
+              <Route path="/trending" element={<TrendingMoviesPage />} />
               <Route path="/reviews/form" element={<AddMovieReviewPage />} />
               <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
               <Route path="/reviews/:id" element={<MovieReviewPage />} />

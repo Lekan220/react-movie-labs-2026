@@ -28,6 +28,7 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
     { label: "Favorites", path: "/movies/favorites" },
     { label: "Option 3", path: "/" },
     { label: "Option 4", path: "/" },
+    { label: "Trending", path: "/trending" },
   ];
 
   const handleMenuSelect = (pageURL) => {
