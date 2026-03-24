@@ -7,6 +7,7 @@ import AddToFavoritesIcon from '../components/cardIcons/addToFavorites'
 import { useState, useContext } from "react";
 import { MoviesContext } from "../contexts/moviesContext";
 import TextField from "@mui/material/TextField";
+import AddToPlaylistIcon from "../components/cardIcons/AddToPlaylistIcon";
 const HomePage = (props) => {
   const { data, error, isPending, isError } = useQuery({
     queryKey: ['discover'],
@@ -48,6 +49,7 @@ const HomePage = (props) => {
         title="Discover Movies"
         movies={filteredMovies}
         action={(movie) => <AddToFavoritesIcon movie={movie} />}
+        
       />
 
       {filteredMovies.length === 0 && (
