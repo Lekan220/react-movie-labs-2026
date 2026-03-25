@@ -14,9 +14,10 @@ import Spinner from '../spinner'
 
 export default function MovieReviews({ movie }) {
     const { data, error, isPending, isError } = useQuery({
-    queryKey: ['reviews', { id: movie.id }],
-    queryFn: getMovieReviews,
-  });
+  queryKey: ['reviews', { id: movie?.id }],
+  queryFn: getMovieReviews,
+  enabled: !!movie?.id,   // 🔥 THIS LINE FIXES IT
+});
   
   if (isPending) {
     return <Spinner />;
@@ -26,7 +27,7 @@ export default function MovieReviews({ movie }) {
     return <h1>{error.message}</h1>;
   }
   
-  const reviews = data.results;
+const reviews = data?.results || [];
 
 
   return (

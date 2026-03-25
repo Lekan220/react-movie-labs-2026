@@ -11,6 +11,7 @@ import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 const MoviePage = () => {
   const { id } = useParams();
 
+  // 🎬 Movie details
   const {
     data: movie,
     error,
@@ -19,8 +20,10 @@ const MoviePage = () => {
   } = useQuery({
     queryKey: ["movie", { id }],
     queryFn: getMovie,
+    enabled: !!id, // 🔥 prevents queryKey error
   });
 
+  // 🎯 Recommendations
   const {
     data: recData,
     isPending: recPending,
@@ -29,38 +32,29 @@ const MoviePage = () => {
   } = useQuery({
     queryKey: ["recommendations", { id }],
     queryFn: getMovieRecommendations,
+    enabled: !!id, // 🔥 prevents queryKey error
   });
 
+  // ⏳ Loading states
   if (isPending) return <Spinner />;
   if (isError) return <h1>{error.message}</h1>;
 
-  const recommendations = recData?.results?.slice(0, 6) || [];
+  if (recPending) return <Spinner />;
+  if (recIsError) return <h1>{recError.message}</h1>;
+
+  const recommendations = recData?.results || [];
 
   return (
     <>
-      {movie ? (
-        <PageTemplate movie={movie}>
-          <MovieDetails movie={movie} />
+      <PageTemplate movie={movie}>
+        <MovieDetails movie={movie} />
+      </PageTemplate>
 
-          <h2 style={{ marginTop: "2rem" }}>Recommended Movies</h2>
-
-          {recPending && <Spinner />}
-          {recIsError && <h1>{recError.message}</h1>}
-
-          {!recPending && !recIsError && recommendations.length > 0 && (
-            <MovieList
-              movies={recommendations}
-              action={(movie) => <AddToFavoritesIcon movie={movie} />}
-            />
-          )}
-
-          {!recPending && !recIsError && recommendations.length === 0 && (
-            <p>No recommendations found.</p>
-          )}
-        </PageTemplate>
-      ) : (
-        <p>Waiting for movie details</p>
-      )}
+      <h3 style={{ marginTop: "2rem" }}>Recommended Movies</h3>
+      <MovieList
+        movies={recommendations}
+        action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      />
     </>
   );
 };
