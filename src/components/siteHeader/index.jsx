@@ -26,8 +26,7 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
   const menuOptions = [
     { label: "Home", path: "/" },
     { label: "Favorites", path: "/movies/favorites" },
-    { label: "Option 3", path: "/" },
-    { label: "Option 4", path: "/" },
+    { label: "Top Rated", path: "/top-rated" },
     { label: "Trending", path: "/trending" },
     { label: "Upcoming", path: "/upcoming" }
   ];
