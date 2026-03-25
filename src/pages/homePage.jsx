@@ -8,6 +8,7 @@ import { useState, useContext } from "react";
 import { MoviesContext } from "../contexts/moviesContext";
 import TextField from "@mui/material/TextField";
 import AddToPlaylistIcon from "../components/cardIcons/AddToPlaylistIcon";
+
 const HomePage = (props) => {
   const { data, error, isPending, isError } = useQuery({
     queryKey: ['discover'],
