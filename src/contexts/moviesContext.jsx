@@ -29,9 +29,15 @@ const addToMustWatch = (movie) => {
       (mId) => mId !== movie.id
     ) )
   };
-  const addReview = (movie, review) => {
-    setMyReviews( {...myReviews, [movie.id]: review } )
-  };
+ const addReview = (movie, review) => {
+  setMyReviews((prevReviews) => {
+    const movieReviews = prevReviews[movie.id] || [];
+    return {
+      ...prevReviews,
+      [movie.id]: [...movieReviews, review],
+    };
+  });
+};
   console.log(myReviews);
 const handleAddToMustWatch = (e) => {
   e.preventDefault();
