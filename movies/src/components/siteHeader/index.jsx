@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -7,30 +7,50 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+
 import { useNavigate } from "react-router";
+
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+
+import { AuthContext } from "../../contexts/AuthContext";
+
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 const SiteHeader = ({ toggleDarkMode, darkMode }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const navigate = useNavigate();
 
-  const menuOptions = [
-    { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favorites" },
-    { label: "Top Rated", path: "/top-rated" },
-    { label: "Trending", path: "/trending" },
-    { label: "Upcoming", path: "/upcoming" },
-    {label: "Dashboard", path: "/dashboard"},
-  ];
+  const { user, logout } = useContext(AuthContext);
+
+  const menuOptions = user
+    ? [
+        { label: "Home", path: "/" },
+        { label: "Favorites", path: "/movies/favorites" },
+        { label: "Top Rated", path: "/top-rated" },
+        { label: "Trending", path: "/trending" },
+        { label: "Upcoming", path: "/upcoming" },
+        { label: "Dashboard", path: "/dashboard" },
+        { label: "My Reviews", path: "/my-reviews" },
+      ]
+    : [
+        { label: "Home", path: "/" },
+        { label: "Top Rated", path: "/top-rated" },
+        { label: "Trending", path: "/trending" },
+        { label: "Upcoming", path: "/upcoming" },
+        { label: "Login", path: "/login" },
+        { label: "Signup", path: "/signup" },
+      ];
 
   const handleMenuSelect = (pageURL) => {
     setAnchorEl(null);
@@ -45,9 +65,11 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
     <>
       <AppBar position="fixed" color="secondary">
         <Toolbar>
+
           <Typography variant="h4" sx={{ flexGrow: 1 }}>
             TMDB Client
           </Typography>
+
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             All you ever wanted to know about Movies!
           </Typography>
@@ -63,26 +85,40 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
               >
                 <MenuIcon />
               </IconButton>
+
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
                 keepMounted
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
+
                 {menuOptions.map((opt) => (
                   <MenuItem
                     key={opt.label}
                     onClick={() => handleMenuSelect(opt.path)}
-                  > 
+                  >
                     {opt.label}
                   </MenuItem>
                 ))}
+
+                {user && (
+                  <MenuItem onClick={logout}>
+                    Logout
+                  </MenuItem>
+                )}
+
               </Menu>
 
-              {/* Dark mode toggle in mobile menu */}
               <IconButton color="inherit" onClick={toggleDarkMode}>
                 {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
@@ -96,21 +132,39 @@ const SiteHeader = ({ toggleDarkMode, darkMode }) => {
                   onClick={() => handleMenuSelect(opt.path)}
                 >
                   {opt.label}
-                  { opt.label === "Trending" && <span style={{ marginLeft: 5, fontSize: '0.75rem', color: 'red' }}>Hot!</span> }
+
+                  {opt.label === "Trending" && (
+                    <span
+                      style={{
+                        marginLeft: 5,
+                        fontSize: '0.75rem',
+                        color: 'red'
+                      }}
+                    >
+                      Hot!
+                    </span>
+                  )}
                 </Button>
               ))}
 
-              {/* Dark mode toggle for desktop */}
+              {user && (
+                <Button color="inherit" onClick={logout}>
+                  Logout
+                </Button>
+              )}
+
               <IconButton color="inherit" onClick={toggleDarkMode}>
                 {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
             </>
           )}
+
         </Toolbar>
       </AppBar>
+
       <Offset />
     </>
   );
 };
-      
+
 export default SiteHeader;
